@@ -1,23 +1,7 @@
 from microbit import *
 from random import randint
 import music
-
-
-# SETTINGS #
-asteroidDensity = 3  # sets the possibility of an asteroid inversely
-loopTime = 10  # refresh time of the game logic (<> game speed)
-gameSpeed = 600  # defines the start speed of the game 1000 = 1s
-nextLvlAt = 20    # game steps per level
-
-
-# VARIABLES #
-bJustStarted = True
-grid = []
-bYouLose = False
-lvl = 1
-stpsUntlNxtLvl = nextLvlAt
-stpsUntlNxtRfrsh = 0
-currentGameSpeed = gameSpeed
+import gc
 
 
 # SETTINGS #
@@ -134,7 +118,8 @@ stpsUntlNxtRfrsh = getStepsUntilNextRefresh()
 while True:
     if (bJustStarted):
         bJustStarted = False
-        display.scroll("SPACECRAFT", delay=100)
+        gc.enable()
+        display.scroll("SPACECRAFT", delay=85)
         sleep(500)
         for i in range(3, 0, -1):
             display.show(str(i))
@@ -153,7 +138,7 @@ while True:
         if(lvl == 9 or lvl >= 10):
             display.show(Image.FABULOUS)
         sleep(1000)
-        display.scroll("YOU DIED AT LEVEL " + str(lvl) + "!")
+        display.scroll("YOU DIED AT LEVEL " + str(lvl) + "!", delay=85)
         bJustStarted = False
         grid = []
         bYouLose = False
@@ -164,6 +149,7 @@ while True:
         for i in range(3, 0, -1):
             display.show(str(i))
             sleep(1000)
+        gc.collect()    
     else:
         if (len(grid) > 0):
             if (button_a.was_pressed()):
