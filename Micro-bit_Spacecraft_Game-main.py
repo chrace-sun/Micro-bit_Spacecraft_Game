@@ -1,3 +1,6 @@
+# Made by chrace-sun
+# v1.0.1
+
 from microbit import *
 from random import randint
 import music
