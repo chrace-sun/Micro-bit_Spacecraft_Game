@@ -1,18 +1,15 @@
 # Made by chrace-sun
-# v1.0.1
+# v1.0.2
 
 from microbit import *
 from random import randint
 import music
-import gc
-
 
 # SETTINGS #
 asteroidDensity = 3  # sets the possibility of an asteroid inversely
 loopTime = 10  # refresh time of the game logic (<> game speed)
 gameSpeed = 600  # defines the start speed of the game 1000 = 1s
 nextLvlAt = 20    # game steps per level
-
 
 # VARIABLES #
 bJustStarted = True
@@ -23,13 +20,11 @@ stpsUntlNxtLvl = nextLvlAt
 stpsUntlNxtRfrsh = 0
 currentGameSpeed = gameSpeed
 
-
 # FUNCTIONS #
 def getStepsUntilNextRefresh():
     global loopTime
     global currentGameSpeed
     return int((currentGameSpeed / loopTime))
-
 
 def drawGrid():
     global bYouLose
@@ -45,7 +40,6 @@ def drawGrid():
                     isOn = 7
                 display.set_pixel(col-2, row, isOn)
 
-
 def is_On():
     ret = True
     # if the randomint is true X times then the pixel is on
@@ -56,7 +50,6 @@ def is_On():
             break
     return ret
 
-
 def createRow():
     cols = []
     # go for all 9 pixels in row
@@ -65,7 +58,6 @@ def createRow():
         isOn = is_On()
         cols.append(isOn)
     return cols
-
 
 def buildGrid():
     global stpsUntlNxtLvl
@@ -103,25 +95,21 @@ def buildGrid():
             sleep(500)
             drawGrid()
 
-
 def shiftLeft():
     for row in range(0, len(grid)):
         grid[row].pop(8)
         grid[row].insert(0, is_On())
-
 
 def shiftRight():
     for row in range(0, len(grid)):
         grid[row].pop(0)
         grid[row].append(is_On())
 
-
 # GAME LOOP #
 stpsUntlNxtRfrsh = getStepsUntilNextRefresh()
 while True:
     if (bJustStarted):
         bJustStarted = False
-        gc.enable()
         display.scroll("SPACECRAFT", delay=85)
         sleep(500)
         for i in range(3, 0, -1):
@@ -152,7 +140,6 @@ while True:
         for i in range(3, 0, -1):
             display.show(str(i))
             sleep(1000)
-        gc.collect()    
     else:
         if (len(grid) > 0):
             if (button_a.was_pressed()):
